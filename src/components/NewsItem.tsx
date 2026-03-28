@@ -1,21 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Linking } from 'react-native';
+import { NewsData } from '../utils/handle-api';
 
-interface NewsProps {
-  title: string;
-  image?: string | null;
-  published: string;
-  link: string;
+interface NewsItemProps {
+  item: NewsData;
 }
 
-export default function News({ title, image, published, link }: NewsProps) {
+export default function NewsItem({ item }: NewsItemProps) {
   const handlePress = async () => {
     try {
-      const supported = await Linking.canOpenURL(link);
+      const supported = await Linking.canOpenURL(item.link);
       if (supported) {
-        await Linking.openURL(link);
+        await Linking.openURL(item.link);
       } else {
-        console.warn(`Não foi possível abrir a URL: ${link}`);
+        console.warn(`Não foi possível abrir a URL: ${item.link}`);
       }
     } catch (error) {
       console.error(error);
@@ -24,13 +22,12 @@ export default function News({ title, image, published, link }: NewsProps) {
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress} activeOpacity={0.7}>
-      {image ? (
-        <Image style={styles.image} source={{ uri: image }} resizeMode="cover" />
+      {item.image ? (
+        <Image style={styles.image} source={{ uri: item.image }} resizeMode="cover" />
       ) : null}
-      
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.date}>{published}</Text>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.date}>{item.published}</Text>
       </View>
     </TouchableOpacity>
   );

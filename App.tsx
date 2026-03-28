@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, SafeAreaView, ActivityIndicator, Image } from 'react-native';
-import NewsList from './src/components/News';
+import NewsList from './src/components/NewsList';
 import { fetchNewsService, NewsData } from './src/utils/handle-api';
 
 export default function App() {
@@ -49,7 +49,7 @@ export default function App() {
           <Text style={styles.errorText}>Erro: {error}</Text>
         </View>
       ) : (
-        <NewsList data={NewsList} />
+        <NewsList data={newsList} />
       )}
     </SafeAreaView>
   );
