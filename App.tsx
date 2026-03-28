@@ -52,7 +52,12 @@ export default function App() {
           <Text style={styles.errorText}>Erro: {error}</Text>
         </View>
       ) : (
-        <NewsList data={newsList} />
+        <>
+          <View style={styles.countContainer}>
+            <Text style={styles.newsCount}>{newsList.length} notícias encontradas</Text>
+          </View>
+          <NewsList data={newsList} />
+        </>
       )}
     </SafeAreaView>
   );
@@ -96,5 +101,17 @@ const styles = StyleSheet.create({
   },
   refreshButton: {
     marginTop: 8,
+  },
+  countContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 8,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  newsCount: {
+    fontSize: 14,
+    color: '#666',
   },
 });
