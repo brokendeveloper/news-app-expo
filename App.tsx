@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, SafeAreaView, ActivityIndicator, Image } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator, Image, Button } from 'react-native';
 import NewsList from './src/components/NewsList';
 import { fetchNewsService, NewsData } from './src/utils/handle-api';
 
@@ -37,6 +37,9 @@ export default function App() {
           style={styles.logo}
         />
         <Text style={styles.headerTitle}>Últimas notícias</Text>
+        <View style={styles.refreshButton}>
+          <Button title="Atualizar lista" onPress={fetchNews} />
+        </View>
       </View>
 
       {loading ? (
@@ -90,5 +93,8 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 16,
+  },
+  refreshButton: {
+    marginTop: 8,
   },
 });
