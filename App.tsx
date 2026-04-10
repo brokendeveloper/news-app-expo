@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator, Image, Button } from 'react-native';
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator, Image, Button, Platform, StatusBar } from 'react-native';
 import NewsList from './src/components/NewsList';
 import { fetchNewsService, NewsData } from './src/utils/handle-api';
+import globalStyles from './src/styles/global';
 
 export default function App() {
   const [newsList, setNewsList] = useState<NewsData[]>([]);
@@ -27,37 +28,22 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
+      <ExpoStatusBar style="dark" />
       
       <View style={styles.header}>
         <Image
-          source={{
-            uri: 'https://cdn-icons-png.flaticon.com/512/21/21601.png'
-          }}
+          source={require('./assets/logo.png')}
           style={styles.logo}
         />
-        <Text style={styles.headerTitle}>Últimas notícias</Text>
-        <View style={styles.refreshButton}>
-          <Button title="Atualizar lista" onPress={fetchNews} />
-        </View>
+        <Text style={styles.title}>Notícias</Text>
       </View>
 
       {loading ? (
-        <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Carregando notícias...</Text>
-        </View>
+        <ActivityIndicator size="large" color="#0000ff" />
       ) : error ? (
-        <View style={styles.centerContainer}>
-          <Text style={styles.errorText}>Erro: {error}</Text>
-        </View>
+        <Text>{error}</Text>
       ) : (
-        <>
-          <View style={styles.countContainer}>
-            <Text style={styles.newsCount}>{newsList.length} notícias encontradas</Text>
-          </View>
-          <NewsList data={newsList} />
-        </>
+        <NewsList data={newsList} />
       )}
     </SafeAreaView>
   );
@@ -66,52 +52,29 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: globalStyles.backgroundColor,
   },
   header: {
-    padding: 16,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    paddingTop: Platform.select({
+      ios: 30,
+      android: (StatusBar.currentHeight || 0) + 60,
+      default: 40,
+    }), 
+    backgroundColor: '#3498db',
     alignItems: 'center',
-    paddingTop: 40,
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginTop: 8,
+    justifyContent: 'center',
+    paddingBottom: 10,
   },
   logo: {
     width: 50,
     height: 50,
   },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
   },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: '#666',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 16,
-  },
-  refreshButton: {
-    marginTop: 8,
-  },
-  countContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  newsCount: {
-    fontSize: 14,
-    color: '#666',
-  },
+  body: {
+    fontSize: globalStyles.bodyFontSize,
+  }
 });
